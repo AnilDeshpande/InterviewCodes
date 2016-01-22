@@ -15,44 +15,67 @@ class DoubleLinkedList{
 	public DoubleLinkedList() {
 		// TODO Auto-generated constructor stub
 		head=new DLNode();
+		tail=new DLNode();
 		head.number=999;
-		head.forwardLink=null;
+		tail.number=999;
+		
+		head.forwardLink=tail;
 		head.backwardLink=null;
 		
-		tail=new DLNode();
-		tail.number=999;
 		tail.forwardLink=null;
-		tail.backwardLink=null;
+		tail.backwardLink=head;
 		
 	}
 	
 	public void addNodeAtFirst(DLNode node) {
+		
 		node.forwardLink=head.forwardLink;
 		head.forwardLink=node;
 		node.backwardLink=head;
+		//adjustring the tail
+		if(tail.backwardLink==head){
+			tail.backwardLink=node;
+			node.forwardLink=tail;
+		}
+		
+		
 	}
 	
 	public void addNodeAtLast(DLNode node) {
-		tail.forwardLink=node;
-		node.backwardLink=tail;
-		node.forwardLink=null;
-		tail=node;
+		if(tail.backwardLink==head){
+			addNodeAtFirst(node);
+		}else{
+			tail.backwardLink.forwardLink=node;
+			node.forwardLink=tail;
+			tail.backwardLink=node;
+			node.backwardLink=tail.backwardLink;
+		}
+		
 	}
 	
 	public void displayList() {
 		DLNode tempNode=head;
-		if(tempNode.forwardLink==null){
+		if(tempNode.forwardLink==tail){
 			System.out.println("Linked List is empty");
 		}else{
-			while (tempNode.forwardLink!=null) {
+			while (tempNode.forwardLink!=tail ) {
 				System.out.println(""+tempNode.forwardLink.number);
 				tempNode=tempNode.forwardLink;
 			}
 		}
 	}
 	
-	
-	
+	public void displayLisyReversly() {
+		DLNode temDlNode=tail;
+		if(temDlNode.backwardLink==head){
+			System.out.println("Linked List is empty");
+		}else{
+			while(temDlNode.backwardLink!=head){
+				System.out.println(""+temDlNode.backwardLink.number);
+				temDlNode=temDlNode.backwardLink;
+			}
+		}
+	}
 	
 	private int size(){
 		int size=0;
@@ -75,28 +98,24 @@ public class DoubleLinkedListDemo {
 
 	public static void main(String[] args) {
 		DoubleLinkedList doubleLinkedList=new DoubleLinkedList();
-		doubleLinkedList.displayList();
+		
 		
 		DLNode dlNode=new DLNode();
 		dlNode.number=100;
-		doubleLinkedList.addNodeAtFirst(dlNode);
+		doubleLinkedList.addNodeAtLast(dlNode);
+		/*doubleLinkedList.addNodeAtFirst(dlNode);*/
 		
 		
 		DLNode dlNode1=new DLNode();
 		dlNode1.number=200;
-		doubleLinkedList.addNodeAtFirst(dlNode1);
+		doubleLinkedList.addNodeAtLast(dlNode1);
 		
-		
-		DLNode dlNode2=new DLNode();
+		/*DLNode dlNode2=new DLNode();
 		dlNode2.number=300;
-		doubleLinkedList.addNodeAtLast(dlNode2);
+		doubleLinkedList.addNodeAtFirst(dlNode2);*/
 		
-		
-		DLNode dlNode3=new DLNode();
-		dlNode3.number=400;
-		doubleLinkedList.addNodeAtLast(dlNode3);
-		
-		doubleLinkedList.displayList();
+		/*doubleLinkedList.displayList();*/
+		doubleLinkedList.displayLisyReversly();
 	}
 	
 }
