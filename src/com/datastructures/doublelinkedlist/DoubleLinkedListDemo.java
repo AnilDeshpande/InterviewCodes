@@ -12,6 +12,12 @@ class DoubleLinkedList{
 	private DLNode head;
 	private DLNode	tail;
 	
+	private int size;
+	
+	public int getSize() {
+		return this.size>0?this.size-1:0;
+	}
+	
 	public DoubleLinkedList() {
 		// TODO Auto-generated constructor stub
 		head=new DLNode();
@@ -25,6 +31,7 @@ class DoubleLinkedList{
 		
 		tail.forwardLink=null;
 		tail.backwardLink=head;
+		size=0;
 		
 	}
 	
@@ -40,6 +47,7 @@ class DoubleLinkedList{
 			head.forwardLink.backwardLink=node;
 			head.forwardLink=node;
 		}
+		size++;
 	}
 	
 	public void addNodeAtLast(DLNode node) {
@@ -51,7 +59,33 @@ class DoubleLinkedList{
 			tail.backwardLink.forwardLink=node;
 			tail.backwardLink=node;
 		}
-		
+		size++;
+	}
+	
+	public void removeFirstNode(){
+		if(head.forwardLink==tail && tail.backwardLink==head){
+			System.out.println("List is empty, no node to remove");
+		}else{
+			DLNode dlNode=head.forwardLink;
+			System.out.println("Node being removed: "+dlNode.number);
+			head.forwardLink=dlNode.forwardLink;
+			head.forwardLink.backwardLink=dlNode.backwardLink;
+			dlNode=null;
+			size--;
+		}
+	}
+	
+	public void removeLastNode() {
+		if(head.forwardLink==tail && tail.backwardLink==head){
+			System.out.println("List is empty, no node to remove");
+		}else{
+			DLNode dlNode=tail.backwardLink;
+			System.out.println("Node being removed: "+dlNode.number);
+			tail.backwardLink=dlNode.backwardLink;
+			tail.backwardLink.forwardLink=dlNode.forwardLink;
+			dlNode=null;
+			size--;
+		}
 	}
 	
 	public void displayList() {
@@ -78,18 +112,39 @@ class DoubleLinkedList{
 		}
 	}
 	
-	private int size(){
-		int size=0;
-		DLNode tempNode=head;
-		if(tempNode.forwardLink==null){
-			size=0;
+	public void addNodeAtPosition(DLNode node, int position){
+		if(getSize()==0){
+			System.out.println("The list id empty");
+		}else if (position>getSize()){
+			System.out.println("The "+position+" is not available for adding the node "+node.number);
 		}else{
-			while (tempNode.forwardLink!=null) {
-				tempNode=tempNode.forwardLink;
-				size++;
+			DLNode temp=head;
+			for(int i=0;i<position-1;i++){
+				temp=temp.forwardLink;
 			}
+			node.forwardLink=temp.forwardLink;
+			node.backwardLink=temp;
+			temp.forwardLink.backwardLink=node;
+			temp.forwardLink=node;
+			size++;
 		}
-		return size;
+	}
+	
+	public void removeNodeFromPosition(int position) {
+		if(getSize()==0){
+			System.out.println("The list id empty");
+		}else if (position>getSize()){
+			System.out.println("The "+position+" is not available for removing");
+		}else{
+			DLNode temp=head;
+			for(int i=0;i<position;i++){
+				temp=temp.forwardLink;
+			}
+			temp.backwardLink.forwardLink=temp.forwardLink;
+			temp.forwardLink.backwardLink=temp.backwardLink;
+			System.out.println("The "+temp.number+" removed from position "+position);
+			size--;
+		}
 	}
 	
 }
@@ -109,8 +164,24 @@ public class DoubleLinkedListDemo {
 		dlNode1.number=200;
 		doubleLinkedList.addNodeAtLast(dlNode1);
 		
-		doubleLinkedList.displayList();
+		DLNode dlNode2=new DLNode();
+		dlNode2.number=300;
+		doubleLinkedList.addNodeAtFirst(dlNode2);
 		
+		
+		
+		doubleLinkedList.displayList();
+		System.out.println("Size of the list: "+doubleLinkedList.getSize());
+		
+		doubleLinkedList.addNodeAtPosition(new DLNode(), 2);
+		
+		doubleLinkedList.displayList();
+		System.out.println("Size of the list: "+doubleLinkedList.getSize());
+		
+		doubleLinkedList.removeNodeFromPosition(2);
+		
+		doubleLinkedList.displayList();
+		System.out.println("Size of the list: "+doubleLinkedList.getSize());
 	}
 	
 }
