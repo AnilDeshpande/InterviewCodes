@@ -16,6 +16,7 @@ class DoubleLinkedList{
 		// TODO Auto-generated constructor stub
 		head=new DLNode();
 		tail=new DLNode();
+		
 		head.number=999;
 		tail.number=999;
 		
@@ -28,27 +29,27 @@ class DoubleLinkedList{
 	}
 	
 	public void addNodeAtFirst(DLNode node) {
-		
-		node.forwardLink=head.forwardLink;
-		head.forwardLink=node;
-		node.backwardLink=head;
-		//adjustring the tail
-		if(tail.backwardLink==head){
-			tail.backwardLink=node;
+		if(head.forwardLink==tail && tail.backwardLink==head){
 			node.forwardLink=tail;
+			node.backwardLink=head;
+			head.forwardLink=node;
+			tail.backwardLink=node;
+		}else{
+			node.forwardLink=head.forwardLink;
+			node.backwardLink=head;
+			head.forwardLink.backwardLink=node;
+			head.forwardLink=node;
 		}
-		
-		
 	}
 	
 	public void addNodeAtLast(DLNode node) {
 		if(tail.backwardLink==head){
 			addNodeAtFirst(node);
 		}else{
-			tail.backwardLink.forwardLink=node;
-			node.forwardLink=tail;
-			tail.backwardLink=node;
 			node.backwardLink=tail.backwardLink;
+			node.forwardLink=tail;
+			tail.backwardLink.forwardLink=node;
+			tail.backwardLink=node;
 		}
 		
 	}
@@ -103,19 +104,13 @@ public class DoubleLinkedListDemo {
 		DLNode dlNode=new DLNode();
 		dlNode.number=100;
 		doubleLinkedList.addNodeAtLast(dlNode);
-		/*doubleLinkedList.addNodeAtFirst(dlNode);*/
-		
 		
 		DLNode dlNode1=new DLNode();
 		dlNode1.number=200;
 		doubleLinkedList.addNodeAtLast(dlNode1);
 		
-		/*DLNode dlNode2=new DLNode();
-		dlNode2.number=300;
-		doubleLinkedList.addNodeAtFirst(dlNode2);*/
+		doubleLinkedList.displayList();
 		
-		/*doubleLinkedList.displayList();*/
-		doubleLinkedList.displayLisyReversly();
 	}
 	
 }
